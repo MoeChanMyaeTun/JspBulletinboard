@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DbConnection {
-	private String jdbcURL = "jdbc:mysql://localhost:3306/bulletinboard_ojt?useSSL=false";
+	private String jdbcURL = "jdbc:mysql://localhost:3306/bulletinboard_ojt";
 	private String jdbcUsername = "root";
 	private String jdbcPassword = "root";
 	
