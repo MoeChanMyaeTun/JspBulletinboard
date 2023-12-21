@@ -13,18 +13,46 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet("/")
+@WebServlet("/UserServlet")
 public class UserServlet extends HttpServlet implements Serializable {
 	private static final long serialVersionUID = 1L;
     private UserRepository userRepository;
     public UserServlet() {
     	this.userRepository = new UserRepository();
     }
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+        System.out.println(action);
+        if ("update".equals(action)) {
+            try {
+            	updateUser(request, response);
+           	}catch(SQLException e) {
+           		e.printStackTrace();
+           	}
+        } else {
+            // Handle other actions if needed
+        }
+        if ("delete".equals(action)) {
+            try {
+            	deleteUser(request, response);
+           	}catch(SQLException e) {
+           		e.printStackTrace();
+           	}
+        } else {
+            // Handle other actions if needed
+        }
+    }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getServletPath();
-
-        try {
+    	String action = request.getParameter("action");
+        if (action == null) {
+    	    try {
+				listUsers(request, response);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+    	} else {
             switch (action) {
                 case "/new":
                     showNewForm(request, response);
@@ -36,37 +64,24 @@ public class UserServlet extends HttpServlet implements Serializable {
                 		e.printStackTrace();
                 	}
                     break;
-                case "/delete":
-                    try {
-                    	 deleteUser(request, response);
-	               	}catch(SQLException e) {
-	               		e.printStackTrace();
-	               	}
-                    break;
-                case "/edit":
+                case "edit":
                     try {
                     	showEditForm(request, response);
 	               	}catch(SQLException e) {
 	               		e.printStackTrace();
 	               	}
                     break;
-                case "/update":
+                case "detail":
                     try {
-                    	updateUser(request, response);
+                    	showDetailUser(request, response);
 	               	}catch(SQLException e) {
 	               		e.printStackTrace();
 	               	}
                     break;
                 default:
-                    try {
-                    	listUsers(request, response);
-	               	}catch(SQLException e) {
-	               		e.printStackTrace();
-	               	}
-                    break;
+    	            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action");
+    	            break;
             }
-        } catch (Exception e) {
-            throw new ServletException(e);
         }
     }
     
@@ -87,7 +102,7 @@ public class UserServlet extends HttpServlet implements Serializable {
 
     private void listUsers(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        List<User> userList = userRepository.getAllUsers();
+        List<User> userList = UserRepository.getAllUsers();
         request.setAttribute("userList", userList);
         RequestDispatcher dispatcher = request.getRequestDispatcher("user_list.jsp");
         dispatcher.forward(request, response);
@@ -98,16 +113,17 @@ public class UserServlet extends HttpServlet implements Serializable {
             throws SQLException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         userRepository.deleteUser(id);
-        response.sendRedirect("list");
+        response.sendRedirect("user_list.jsp");
     }
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, ServletException, IOException {
+           throws SQLException, ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        User existingUser = userRepository.getUserById(id);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("user_form.jsp");
+        User existingUser = UserRepository.getUserById(id);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("user_edit.jsp");
         request.setAttribute("user", existingUser);
         dispatcher.forward(request, response);
+    
     }
 
     private void updateUser(HttpServletRequest request, HttpServletResponse response)
@@ -115,10 +131,17 @@ public class UserServlet extends HttpServlet implements Serializable {
         int id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("name");
         String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        userRepository.updateUser(id, name, email, password);
-        response.sendRedirect("list");
+        userRepository.updateUser(id, name, email);
+        response.sendRedirect("user_list.jsp");
     }
-        
+    
+    private void showDetailUser(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, ServletException, IOException {
+    	 int id = Integer.parseInt(request.getParameter("id"));
+         User existingUser = UserRepository.getUserById(id);
+         RequestDispatcher dispatcher = request.getRequestDispatcher("user_detail.jsp");
+         request.setAttribute("user", existingUser);
+         dispatcher.forward(request, response);
+    }
 }
 
