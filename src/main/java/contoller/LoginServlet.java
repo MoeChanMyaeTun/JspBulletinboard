@@ -21,7 +21,6 @@ public class LoginServlet extends HttpServlet {
 
 	public LoginServlet() {
 		this.userRepository = new UserRepository();
-		System.out.println(userRepository);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -32,7 +31,6 @@ public class LoginServlet extends HttpServlet {
 		if (loginUser != null && loginUser.getName().equalsIgnoreCase(userName)
 				&& loginUser.getPassword().equals(password)) {
 			HttpSession session = request.getSession();
-			System.out.println(session);
 			session.setAttribute("user", loginUser);
 			response.sendRedirect("index.jsp");
 		} else {
