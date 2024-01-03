@@ -1,5 +1,4 @@
-
-<jsp:include page="layouts/header.jsp"></jsp:include>
+<jsp:include page="../layouts/header.jsp"></jsp:include>
 <%@ page import="java.util.List"%>
 <%@ page import="models.User"%>
 <%@ page import="dao.UserRepository"%>
@@ -52,4 +51,4 @@
 
 </div>
 
-<jsp:include page="layouts/footer.jsp"></jsp:include>
+<jsp:include page="../layouts/footer.jsp"></jsp:include>

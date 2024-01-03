@@ -15,8 +15,7 @@ import java.util.List;
 
 public class UserRepository {
 	// Insert a new user into the 'users' table
-	private static final String INSERT_USERS_SQL = "Insert Into users" + "(name, email, password) Value"
-			+ "(?, ?, ?,?);";
+	private static final String INSERT_USERS_SQL = "Insert Into users" + "(name, email, password) Value" + "(?, ?, ?);";
 
 	// Select a user by their ID from the 'users' table
 	private static final String SELECT_USERS_BY_ID = "select id, name, email, password from users where id = ?;";
@@ -32,6 +31,7 @@ public class UserRepository {
 	private static final String Login_User = "SELECT * FROM users WHERE name = ? AND password = ?";
 
 	public User loginUser(String name, String password) {
+
 		try (Connection connection = new DbConnection().getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(Login_User)) {
 			preparedStatement.setString(1, name);
@@ -133,7 +133,6 @@ public class UserRepository {
 
 	// delete user by id
 	public boolean deleteUser(int id) {
-		System.out.println("here");
 		try (Connection connection = new DbConnection().getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USERS_SQL)) {
 
@@ -158,7 +157,6 @@ public class UserRepository {
 			preparedStatement.setInt(3, id);
 
 			int result = preparedStatement.executeUpdate();
-			System.out.println(result);
 			return result > 0;
 
 		} catch (SQLException e) {
