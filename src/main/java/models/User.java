@@ -45,7 +45,7 @@ public class User {
 		return password;
 	}
 	public void setPassword(String password) {
-        this.password = passwordHash(password);
+        this.password = password;
     }
 	
 	public static String passwordHash(String password) {
@@ -63,5 +63,5 @@ public class User {
 			return null;
 		}
 		
-}
+	}
 }
