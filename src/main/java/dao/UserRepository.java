@@ -29,6 +29,22 @@ public class UserRepository {
 	// Update a user in the 'users' table by their ID
 	private static final String UPDATE_USERS_SQL = "update users set name = ?, email = ? where id = ?;";
 	private static final String Login_User = "SELECT * FROM users WHERE name = ? AND password = ?";
+	private static final String CHANGE_PASSWORD = "UPDATE bulletinboard_ojt.users SET password = ? WHERE id = ?;";
+	private static final String VERIFY_CREDENTIALS ="SELECT COUNT(*) FROM users WHERE id = ? AND password = ?";
+	private static final String RESET_TOKEN = "UPDATE users SET token = ? WHERE id = ?";
+	private static final String SAVE_FORGOT = "UPDATE users SET password = ?, reset_token = NULL WHERE id = ?";
+
+	public static void saveResetToken(int userId, String resetToken, String email) {
+	        try (Connection connection = new DbConnection().getConnection();
+	             PreparedStatement preparedStatement = connection.prepareStatement(RESET_TOKEN)) {
+	            preparedStatement.setString(1, resetToken);
+	            preparedStatement.setInt(2, userId);
+
+	            preparedStatement.executeUpdate();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	}
 
 	public User loginUser(String name, String password) {
 
@@ -79,8 +95,8 @@ public class UserRepository {
 		}
 
 	}
-
-	private String hashPassword(String password) {
+	
+	private static String hashPassword(String password) {
 		try {
 			MessageDigest md = MessageDigest.getInstance("SHA-256");
 			byte[] hashedBytes = md.digest(password.getBytes());
@@ -127,7 +143,6 @@ public class UserRepository {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 		return userList;
 	}
 
@@ -164,5 +179,53 @@ public class UserRepository {
 			return false;
 		}
 	}
+	
+	//change password
+	public static boolean changePassword(String idString, String hashPasswords, String newPassword) {
+		
+	    if (verifyCredentials(idString, hashPasswords)) {
+	    	String hashedPassword = hashPassword(newPassword);
+	        try (Connection connection = new DbConnection().getConnection();
+	             PreparedStatement preparedStatement = connection.prepareStatement(CHANGE_PASSWORD)) {
+	        	preparedStatement.setString(1, hashedPassword);
+	        	preparedStatement.setString(2, idString);
+	            int result = preparedStatement.executeUpdate();
+	            return result > 0;
 
-}
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    } else {
+	        return false;
+	    }
+	}
+
+	public static boolean verifyCredentials(String idString, String hashPasswords) {
+	    try (Connection connection = new DbConnection().getConnection();
+	         PreparedStatement preparedStatement = connection.prepareStatement(VERIFY_CREDENTIALS)) {
+	    	preparedStatement.setString(1, hashPasswords);
+	        preparedStatement.setString(2, idString);
+	        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+	            return resultSet.next();
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+	 public static void updatePassword(int userId, String newPassword) {
+	        try (Connection connection = new DbConnection().getConnection();
+	             PreparedStatement preparedStatement = connection.prepareStatement(SAVE_FORGOT)) {
+	            preparedStatement.setString(1, newPassword);
+	            preparedStatement.setInt(2, userId);
+
+	            preparedStatement.executeUpdate();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    // Other methods for user-related database operations...
+	}

@@ -30,12 +30,12 @@
 				</th>
 				<th scope="row"
 					class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-					<a href="UserServlet?action=detail&id=<%= user.getId() %>"><%= user.getName() %></a>
+					<a href="<%=request.getContextPath() + "/UserServlet?action=detail&id="+ user.getId() %>"><%= user.getName() %></a>
 				</th>
 				<td class="px-6 py-4"><%= user.getEmail() %></td>
 				<td class="px-6 py-4"><a
-					href="UserServlet?action=edit&id=<%= user.getId() %>">Edit</a>
-					<form action="UserServlet?action=delete&id=<%= user.getId() %>"
+					href="<%=request.getContextPath() + "/UserServlet?action=edit&id="+ user.getId() %>">Edit</a>
+					<form action="<%=request.getContextPath() + "/UserServlet?action=delete&id="+ user.getId() %>"
 						method="post">
 						<input type="submit" value="Delete">
 					</form></td>

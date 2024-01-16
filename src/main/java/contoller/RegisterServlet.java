@@ -13,7 +13,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 
 import dao.UserRepository;
 
@@ -23,26 +22,34 @@ import dao.UserRepository;
 @WebServlet("/RegisterServlet")
 public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private UserRepository userRepository;
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public RegisterServlet() {
-		this.userRepository = new UserRepository();
-	}
+	 protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	            throws ServletException, IOException {
+	        System.out.println("hello");
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		String userName = request.getParameter("name");
-		String email = request.getParameter("email");
-		String password = request.getParameter("password");
-		userRepository.addNewUser(userName, email, password);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
-		dispatcher.forward(request, response);
-	}
+	        // Your other code for handling the GET request goes here
+	    }
+		private UserRepository userRepository;
+	 
+	 	/**
+	 	 * @see HttpServlet#HttpServlet()
+	 	 */
+	 	public RegisterServlet() {
+	 		this.userRepository = new UserRepository();
+	 	}
+	 
+	 	/**
+	 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 	 *      response)
+	 	 */
+	 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	 			throws ServletException, IOException {
+	 		String userName = request.getParameter("name");
+	 		String email = request.getParameter("email");
+	 		String password = request.getParameter("password");
+	 		userRepository.addNewUser(userName, email, password);
+	 		RequestDispatcher dispatcher = request.getRequestDispatcher("views/home.jsp");
+	 		dispatcher.forward(request, response);
+	 	}
+
 }

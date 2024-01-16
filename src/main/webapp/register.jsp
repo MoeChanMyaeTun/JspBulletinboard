@@ -19,8 +19,9 @@
 					<h1
 						class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
 						Create and account</h1>
-					<form class="space-y-4 md:space-y-6" action="RegisterServlet"
+					<form class="space-y-4 md:space-y-6" action="<%=request.getContextPath() + "/RegisterServlet"%>"
 						method="post">
+						
 						<div>
 							<label for="name" class="block mb-2 text-sm font-medium">Your
 								name</label> <input type="text" name="name" id="name"

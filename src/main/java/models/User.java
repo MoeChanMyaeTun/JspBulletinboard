@@ -7,6 +7,7 @@ public class User {
 	private String name;
 	private String email;
 	private String password;
+	private String token;
 		
 	public User(int id, String name, String email, String password) {
 		super();
@@ -63,5 +64,13 @@ public class User {
 			return null;
 		}
 		
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 }
