@@ -31,6 +31,9 @@
 				<li><a href="UserServlet?action=edit&id=<%= user.getId() %>"
 					class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Edit</a>
 				</li>
+				<li><a href="UserServlet?action=changePw&id=<%= user.getId() %>"
+					class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Change password</a>
+				</li>
 				<li>
 					<form action="UserServlet?action=delete&id=<%= user.getId() %>"
 						method="post">
@@ -45,7 +48,7 @@
 	<div class="flex flex-col items-center pb-10 mt-8">
 		<img
 			class="w-24 h-24 mb-3 rounded-full shadow-lg transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-150 hover:bg-indigo-500 duration-300 mb-8"
-			src="../assets/img/mochi.jpg" alt="mochi image" />
+			src="<%=request.getContextPath()%>/assets/img/mochi.jpg" alt="mochi image" />
 		<h5 class="mb-1 text-xl font-medium text-gray-900"><%= user.getName() %></h5>
 		<span class="text-sm text-gray-500"><%= user.getEmail()%></span>
 	</div>

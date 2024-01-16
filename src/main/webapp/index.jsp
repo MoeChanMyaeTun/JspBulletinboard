@@ -47,7 +47,7 @@
 										up</a>
 								</p>
 							</div>
-							<a href="forgot_password.jsp"
+							<a href="LoginServlet?action=forgot"
 								class="text-sm font-medium text-primary-600 hover:underline">Forgot
 								password?</a>
 						</div>

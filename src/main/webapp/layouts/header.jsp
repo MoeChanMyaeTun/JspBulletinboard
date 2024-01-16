@@ -27,7 +27,7 @@
 				class="self-center text-2xl font-semibold whitespace-nowrap text-zinc-600">BookStore</span>
 			</a>
 			<div class="flex md:order-2">
-					<a href="/Bulletinboard_OJT/views/index.jsp"
+					<a href="<%=request.getContextPath() + "/LogoutServlet"%>"
 						class="block py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 text-zinc-600 font-medium">Logout</a>
 				</div>
 				<ul
